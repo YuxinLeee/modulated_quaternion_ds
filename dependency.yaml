@@ -1,24 +1,23 @@
 repositories:
   src/se3_lpvds:
     type: git
-    url: https://github.com/YuxinLeee/se3_lpvds.git
-
+    url: git@github.com:YuxinLeee/se3_lpvds.git
   # sub-deps listed explicitly
 
   src/se3_lpvds/src/lpvds:
     type: git
-    url: https://github.com/sunan-sun/lpvds.git
-    
+    url: git@github.com:sunan-sun/lpvds.git
+
   src/se3_lpvds/src/quaternion_ds:
     type: git
-    url: https://github.com/YuxinLeee/quaternion_ds.git
+    url: git@github.com:YuxinLeee/quaternion_ds.git
 
   src/se3_lpvds/src/lpvds/src/damm:
     type: git
-    url: https://github.com/sunan-sun//damm.git
+    url: git@github.com:sunan-sun/damm.git
     version: main
 
   src/se3_lpvds/src/lpvds/src/dsopt:
     type: git
-    url: https://github.com/sunan-sun//dsopt.git
+    url: git@github.com:sunan-sun/dsopt.git
     version: main

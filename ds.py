@@ -1,3 +1,4 @@
+import os
 import joblib
 import numpy as np
 import matplotlib.pyplot as plt
@@ -17,13 +18,32 @@ def learn_ds(task_name):
         T = t_raw[0][-1] - t_raw[0][0]
 
     elif task_name == "test_oculus":
-        folder_path = './data/test_oculus'
+        folder_path = os.path.join(os.path.dirname(__file__), 'data', task_name)
         p_raw, q_raw, t_raw, dt = load_tools.load_single_h5_UMI(folder_path, fixed_time = True)
         T = 4.0
 
     elif task_name == "clfd_task1":
         T = 5
         p_raw, q_raw, t_raw, dt = load_tools.load_clfd_dataset(task_id=1, num_traj=1, sub_sample=4, duration=T)
+
+    elif task_name == "pouring-original":
+        folder_path = os.path.join(os.path.dirname(__file__), 'data', task_name)
+        T = 4
+        p_raw, q_raw, t_raw, dt = load_tools.load_h5(folder_path, fixed_time = True, target_length=400, vel_threshold=0.1)
+
+    elif task_name == "pouring-modulated":
+        folder_path = os.path.join(os.path.dirname(__file__), 'data', task_name)
+        T = 4
+        p_raw, q_raw, t_raw, dt = load_tools.load_h5(folder_path, fixed_time = True, target_length=400, vel_threshold=0.1)
+        p_raw = [p[:len(p)//2] for p in p_raw]
+        q_raw = [q[:len(q)//2] for q in q_raw]
+        t_raw = [t[:len(t)//2] for t in t_raw]
+
+    elif task_name == "test":
+        folder_path = os.path.join(os.path.dirname(__file__), 'data', task_name)
+        T = 4
+        p_raw, q_raw, t_raw, dt = load_tools.load_multi_demo_h5(folder_path, fixed_time = True, target_length=200, vel_threshold=0.00)
+
 
     p_in_list, q_in_list, t_in_list   = process_tools.pre_process(p_raw, q_raw, t_raw, opt= "savgol")
     p_out_list, q_out_list            = process_tools.compute_output(p_in_list, q_in_list, t_in_list)
@@ -33,7 +53,7 @@ def learn_ds(task_name):
     t_in = np.hstack(t_in_list)
 
 
-    se3_obj = se3_class(p_in, q_in, p_out, q_out, p_att, q_att, dt, K_init=1)
+    se3_obj = se3_class(p_in, q_in, p_out, q_out, p_att, q_att, dt, K_init=3)
     se3_obj.begin()
     se3_obj.t_in = t_in
     se3_obj.T    = T
